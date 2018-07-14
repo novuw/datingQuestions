@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Linking } from 'react-native';
 import { Button, Card, Icon } from 'react-native-elements';
+import Modal from "react-native-modal";
 
 const questions = ["What's your Rice Purity Test score?",
 "What's your secret kink?",
@@ -92,19 +93,21 @@ const questions = ["What's your Rice Purity Test score?",
 "What would you want for your last meal?"
 ];
 
-
 export default class App extends React.Component {
     constructor(props){
         super(props);
     }
+
     render(){
         return(
             <ImageBackground source={require('./bg.png')} style={styles.bgImage}>
+                <ModalBox />
                 <UI />
             </ImageBackground>
         );
     }
 }
+
 
 class UI extends React.Component {
     constructor(props){
@@ -129,6 +132,32 @@ class UI extends React.Component {
                 <Button style={styles.newQ} icon={{name: 'question-circle-o', type: 'font-awesome', style: { marginRight: 0 }}}  raised large title="" backgroundColor="#4286f4" onPress={this.newQ}/>
             </View>
         );
+    }
+}
+class ModalBox extends React.Component {
+    constructor(props){
+        super(props);
+        this.closeBox = this.closeBox.bind(this);
+        this.state = {
+            status: true
+        };
+    }
+    closeBox(){
+        this.setState({status: false});
+    }
+    render(){
+        return(
+     <View>
+        <Modal isVisible={this.state.status}>
+          <View style={styles.container}>
+            <Text style={{color: 'white', fontSize: 40}}>Welcome to AskMe! If you would like to add questions, email:
+                <Text style={{fontSize: 30}} onPress={() => Linking.openURL('https://gmail.com')}> vacx@protonmail.com</Text>
+                <Text style={{fontSize: 25}}>{'\n\n Credits: \n\n Julia Averbuch \n Delace Jia \n Kotaro Broderick \n Elijah Harbut'}</Text>
+            </Text>
+          </View>
+          <Button backgroundColor="#a51a95" style={{marginTop: '0%', borderRadius: 25, overflow: 'hidden'}} onPress={this.closeBox} title="Thanks!"/>
+        </Modal>
+     </View>);
     }
 }
 
